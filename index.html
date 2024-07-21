@@ -1,3 +1,4 @@
+<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,29 +17,13 @@
         document.getElementById('bypass-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const link = document.getElementById('link').value;
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = 'Bypassing...';
-
-            try {
-                const response = await fetch('http://45.90.13.151:6041', { // Replace with your actual endpoint
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url: link })
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    if (result.status === 'success') {
-                        resultDiv.innerHTML = `Bypassed successfully: ${result.key || result.target}`;
-                    } else {
-                        resultDiv.innerHTML = `Error: ${result.message}`;
-                    }
-                } else {
-                    resultDiv.innerHTML = 'Failed to bypass the link.';
-                }
-            } catch (error) {
-                resultDiv.innerHTML = 'Error occurred while bypassing the link.';
-            }
+            const response = await fetch('/bypass', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ link })
+            });
+            const result = await response.json();
+            document.getElementById('result').innerText = result.message;
         });
     </script>
 </body>
